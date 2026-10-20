@@ -1,0 +1,685 @@
+/* ==========================================================================
+   1. VARIABLES & RESET GLOBAL CON FONDO GAMER GLOBAL
+   ========================================================================== */
+:root {
+    --bg-dark: #050811;
+    --bg-card: rgba(13, 23, 42, 0.85);
+    --primary-color: #00bcd4;
+    --primary-hover: #00acc1;
+    --text-main: #e6f1ff;
+    --text-muted: #8892b0;
+    --white: #ffffff;
+    --border-color: #1e2d42;
+    --shadow-light: rgba(0, 0, 0, 0.5);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* FONDO GENERAL ESTILO GAMER CON PATRÓN FUTURISTA / TECH EN SVG */
+body {
+    background-color: var(--bg-dark);
+    background-image: 
+        radial-gradient(circle at 15% 20%, rgba(0, 188, 212, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 70%, rgba(112, 0, 255, 0.08) 0%, transparent 40%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300bcd4' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+/* ==========================================================================
+   2. ENCABEZADO Y NAVEGACIÓN
+   ========================================================================== */
+.header {
+    background-color: rgba(5, 8, 17, 0.92);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: blur(10px);
+}
+
+.logo-nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+}
+
+.logo-text {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+    text-shadow: 0 0 10px rgba(0, 188, 212, 0.4);
+}
+
+.navigation ul {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navigation a, .nav-btn-about {
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.navigation a:hover {
+    color: var(--primary-color);
+}
+
+.nav-btn-about {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(0, 188, 212, 0.2);
+}
+
+.nav-btn-about:hover {
+    background-color: rgba(0, 188, 212, 0.15);
+}
+
+/* ==========================================================================
+   3. PORTADA / BANNER PRINCIPAL (Portada.gif INTACTA)
+   ========================================================================== */
+.hero {
+    position: relative;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-image: url('img/Portada.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: var(--white);
+    overflow: hidden;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(5, 8, 17, 0.6) 0%, rgba(5, 8, 17, 0.9) 100%);
+    z-index: 1;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+    padding: 3rem 1rem;
+}
+
+.hero .subtitle {
+    color: var(--primary-color);
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    margin-bottom: 0.8rem;
+    text-transform: uppercase;
+    text-shadow: 0 0 8px rgba(0, 188, 212, 0.5);
+}
+
+.hero h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    line-height: 1.2;
+}
+
+.hero p {
+    font-size: 1.15rem;
+    color: #ccd6f6;
+    margin-bottom: 2rem;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    padding: 10px 22px;
+    font-weight: 600;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 0 12px rgba(0, 188, 212, 0.3);
+}
+
+.btn:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 0 18px rgba(0, 188, 212, 0.6);
+}
+
+.btn-outline-light {
+    background: transparent;
+    border: 1px solid var(--white);
+    color: var(--white);
+}
+
+.btn-outline-light:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
+.btn-outline:hover {
+    background-color: rgba(0, 188, 212, 0.1);
+}
+
+/* ==========================================================================
+   4. SECCIÓN PRODUCTOS DESTACADOS
+   ========================================================================== */
+section {
+    padding: 5rem 0;
+}
+
+.products {
+    background-color: #020408;
+    background-image: 
+        linear-gradient(rgba(0, 188, 212, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 188, 212, 0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    border-top: 1px solid rgba(0, 188, 212, 0.15);
+    border-bottom: 1px solid rgba(0, 188, 212, 0.15);
+}
+
+.section-title {
+    font-size: 2rem;
+    text-align: center;
+    margin-bottom: 0.5rem;
+    color: var(--white);
+    text-shadow: 0 0 10px rgba(0, 188, 212, 0.3);
+}
+
+.section-subtitle {
+    text-align: center;
+    color: var(--text-muted);
+    margin-bottom: 3rem;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+}
+
+.product-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    transition: var(--transition);
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--primary-color);
+    box-shadow: 0 5px 20px rgba(0, 188, 212, 0.25);
+}
+
+.card-img img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1.2rem;
+}
+
+.category {
+    font-size: 0.75rem;
+    color: var(--primary-color);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-body h3 {
+    font-size: 1.1rem;
+    margin: 5px 0 10px;
+    color: var(--white);
+}
+
+.card-body p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 15px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--border-color);
+    padding-top: 10px;
+}
+
+.price {
+    font-weight: 700;
+    color: var(--white);
+}
+
+.btn-sm {
+    font-size: 0.8rem;
+    padding: 5px 10px;
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+/* ==========================================================================
+   5. UBICACIÓN Y CONTACTO
+   ========================================================================== */
+.single-location-card, .contact-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    backdrop-filter: blur(5px);
+}
+
+.single-location-card h3, .contact-card h3 {
+    margin-bottom: 1rem;
+    color: var(--white);
+}
+
+.text-accent {
+    color: var(--primary-color);
+}
+
+.location-details p, .company-details p {
+    margin-bottom: 10px;
+    color: var(--text-muted);
+}
+
+.map-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.contact-list li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.social-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(0, 188, 212, 0.1);
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.badge-status {
+    background-color: #2e7d32;
+    color: var(--white);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+}
+
+/* ==========================================================================
+   6. VENTANA FLOTANTE / MODAL
+   ========================================================================== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: var(--transition);
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-card {
+    background-color: #0b1322;
+    border: 1px solid var(--primary-color);
+    border-radius: 8px;
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    position: relative;
+    box-shadow: 0 0 25px rgba(0, 188, 212, 0.3);
+}
+
+.modal-close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-badge {
+    background-color: rgba(0, 188, 212, 0.1);
+    color: var(--primary-color);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.modal-header h2 {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    color: var(--white);
+}
+
+.modal-body p {
+    margin: 15px 0;
+    color: var(--text-muted);
+}
+
+.modal-social-icons {
+    display: flex;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.social-badge {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: var(--white);
+}
+
+.social-badge.fb { background-color: #1877f2; }
+.social-badge.tt { background-color: #000000; }
+.social-badge.wa { background-color: #25d366; }
+
+.modal-footer {
+    margin-top: 20px;
+    text-align: right;
+}
+
+/* ==========================================================================
+   7. ASISTENTE VIRTUAL MAKBOT
+   ========================================================================== */
+.chatbot-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1500;
+}
+
+.chat-toggle-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+    position: relative;
+}
+
+.notification-dot {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background-color: #ff5252;
+    border-radius: 50%;
+    border: 2px solid var(--bg-dark);
+}
+
+.chat-window {
+    position: absolute;
+    bottom: 70px;
+    right: 0;
+    width: 320px;
+    height: 420px;
+    background-color: #0b1322;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(10px);
+    transition: var(--transition);
+}
+
+.chat-window.active {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+}
+
+.chat-header {
+    background-color: var(--bg-dark);
+    padding: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.chat-header-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.bot-avatar {
+    width: 30px;
+    height: 30px;
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.chat-header h4 {
+    font-size: 0.9rem;
+    color: var(--white);
+}
+
+.online-status {
+    font-size: 0.7rem;
+    color: #4caf50;
+}
+
+.chat-close-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+
+.chat-body {
+    flex: 1;
+    padding: 12px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.chat-message {
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    max-width: 85%;
+}
+
+.chat-message.bot {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    align-self: flex-start;
+}
+
+.chat-message.user {
+    background-color: var(--primary-color);
+    color: var(--bg-dark);
+    align-self: flex-end;
+}
+
+.chat-options {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.chat-opt-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--primary-color);
+    padding: 6px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    text-align: left;
+}
+
+.chat-opt-btn:hover {
+    background-color: rgba(0, 188, 212, 0.1);
+}
+
+.chat-footer {
+    padding: 10px;
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    gap: 5px;
+}
+
+.chat-footer input {
+    flex: 1;
+    background-color: var(--bg-dark);
+    border: 1px solid var(--border-color);
+    padding: 8px;
+    border-radius: 4px;
+    color: var(--white);
+    font-size: 0.8rem;
+}
+
+.chat-footer button {
+    background-color: var(--primary-color);
+    border: none;
+    color: var(--bg-dark);
+    padding: 0 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   8. FOOTER / PIE DE PÁGINA Y RESPONSIVE
+   ========================================================================== */
+.footer {
+    border-top: 1px solid var(--border-color);
+    padding: 2rem 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+@media (max-width: 768px) {
+    .logo-nav-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .hero h1 {
+        font-size: 2rem;
+    }
+    
+    .map-actions {
+        flex-direction: column;
+    }
+}
