@@ -1,3 +1,14 @@
+<?php
+session_start();
+include("conexion.php");
+
+// Consultar los productos en la base de datos
+$sql_productos = "SELECT p.*, c.nombre AS categoria_nombre 
+                  FROM producto p 
+                  INNER JOIN categoria c ON p.id_categoria = c.id 
+                  ORDER BY p.id DESC";
+$resultado_productos = $conexion->query($sql_productos);
+?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -10,6 +21,73 @@
     
     <!-- Vinculación al archivo CSS -->
     <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* Estilos adicionales para los botones de usuario en el menú */
+        .user-menu-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .user-badge-nav {
+            color: #38bdf8;
+            font-size: 14px;
+            font-weight: 600;
+            background: rgba(56, 189, 248, 0.1);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+        }
+        .nav-btn-login {
+            background: transparent;
+            color: #38bdf8;
+            border: 1px solid #38bdf8;
+            padding: 7px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .nav-btn-login:hover {
+            background: #38bdf8;
+            color: #0f172a;
+        }
+        .nav-btn-register {
+            background: #2563eb;
+            color: white;
+            padding: 7px 14px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .nav-btn-admin {
+            background: #eab308;
+            color: #0f172a;
+            padding: 7px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 700;
+        }
+        .nav-btn-logout {
+            background: #ef4444;
+            color: white;
+            padding: 7px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+        .badge-stock {
+            background: rgba(34, 197, 94, 0.15);
+            color: #4ade80;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+    </style>
 </head>
 <body>
 
@@ -31,6 +109,18 @@
                             <i class="fas fa-building"></i> Sobre Nosotros
                         </button>
                     </li>
+                    
+                    <!-- SISTEMA DE USUARIOS EN EL MENÚ -->
+                    <li class="user-menu-nav">
+                        <?php if (isset($_SESSION['usuario'])): ?>
+                            <span class="user-badge-nav"><i class="fas fa-user-check"></i> <?php echo $_SESSION['usuario']; ?></span>
+                            <a href="admin.php" class="nav-btn-admin"><i class="fas fa-gauge"></i> Panel</a>
+                            <a href="logout.php" class="nav-btn-logout"><i class="fas fa-right-from-bracket"></i> Salir</a>
+                        <?php else: ?>
+                            <a href="login.php" class="nav-btn-login"><i class="fas fa-right-to-bracket"></i> Iniciar Sesión</a>
+                            <a href="registro.php" class="nav-btn-register">Registrarse</a>
+                        <?php endif; ?>
+                    </li>
                 </ul>
             </nav>
         </div>
@@ -50,7 +140,7 @@
         </div>
     </section>
 
-    <!-- Sección de Productos -->
+    <!-- Sección de Productos Dinámicos -->
     <section id="productos" class="products">
         <div class="container">
             <h2 class="section-title">Productos Destacados</h2>
@@ -58,169 +148,27 @@
 
             <div class="product-grid">
                 
-                <!-- PRODUCTOS ANTERIORES -->
-                
-                <!-- Memoria RAM Fury Beast -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/ram-fury.jpg" alt="Memoria RAM Kingston Fury Beast">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Memorias RAM</span>
-                        <h3>Kingston Fury Beast DDR4 16GB</h3>
-                        <p>Memoria de alto rendimiento a 3200MHz con disipador de calor de perfil bajo, ideal para gaming y edición.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 185.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
+                <?php if ($resultado_productos && $resultado_productos->num_rows > 0): ?>
+                    <?php while ($prod = $resultado_productos->fetch_assoc()): ?>
+                        <div class="product-card">
+                            <div class="card-img">
+                                <img src="<?php echo !empty($prod['imagen']) ? $prod['imagen'] : 'img/ram-fury.jpg'; ?>" alt="<?php echo $prod['nombre']; ?>">
+                            </div>
+                            <div class="card-body">
+                                <span class="category"><?php echo $prod['categoria_nombre']; ?></span>
+                                <h3><?php echo $prod['nombre']; ?></h3>
+                                <p><?php echo $prod['descripcion']; ?></p>
+                                <div class="card-footer">
+                                    <span class="price">S/ <?php echo number_format($prod['precio'], 2); ?></span>
+                                    <span class="badge-stock">Stock: <?php echo $prod['stock']; ?></span>
+                                    <a href="#contacto" class="btn-sm">Consultar</a>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                <!-- SSD Kingston NV2 -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/ssd-kingston.jpg" alt="SSD Kingston NV2 1TB">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Almacenamiento</span>
-                        <h3>SSD Kingston NV2 1TB PCIe 4.0 NVMe</h3>
-                        <p>Velocidad de lectura de hasta 3500 MB/s. Incrementa la velocidad de arranque de tu sistema y aplicaciones.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 245.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Teclado Mecánico Redragon -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/teclado-redragon.jpg" alt="Teclado Mecánico Redragon Kumara">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Periféricos Gamer</span>
-                        <h3>Teclado Mecánico Redragon Kumara K552</h3>
-                        <p>Switches Red mecánicos, retroiluminación RGB configurable y diseño compacto TKL duradero.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 160.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mouse Logitech G203 -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/mouse-logitech.jpg" alt="Mouse Logitech G203 Lightsync">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Periféricos Gamer</span>
-                        <h3>Mouse Logitech G203 Lightsync RGB</h3>
-                        <p>Sensor de 8000 DPI con precisión de grado competitivo e iluminación Lightsync asignable.</p>
-                        <div class="card-footer">
-                            <span class="price"> S/ 95.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- PRODUCTOS NUEVOS -->
-
-                <!-- Combo Teclado y Mouse Acer -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/acer-combo.jpg" alt="Combo Teclado y Mouse Acer EAK040">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Periféricos</span>
-                        <h3>Combo Teclado & Mouse Acer EAK040</h3>
-                        <p>Combo alámbrico ideal para oficina y uso diario, brindando durabilidad y escritura cómoda.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 70.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Mouse Gaming T-WOLF V15 -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/mouse-wolf.jpg" alt="Mouse Gaming T-WOLF V15">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Periféricos Gamer</span>
-                        <h3>Mouse Gaming T-WOLF V15 Beehive</h3>
-                        <p>Diseño ultra ligero en panal de abeja, retroiluminación RGB y respuesta rápida para gaming.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 25.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Fuente de Poder Halion 600W -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/fuente-halion.jpg" alt="Fuente de Poder Halion Micro ATX-600W">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Componentes</span>
-                        <h3>Fuente Halion Micro ATX-600W P8</h3>
-                        <p>Fuente de alimentación estándar ATX 12V v2.0 para chasís compactos y de escritorio.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 75.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Adaptador Mini DisplayPort -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/adaptador-dp.jpg" alt="Adaptador Mini DisplayPort">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Accesorios & Cables</span>
-                        <h3>Adaptador Mini DisplayPort Genérico</h3>
-                        <p>Convertidor de señal de video Mini DP a salida estándar para monitores o proyectores.</p>
-                        <div class="card-footer">
-                            <span class="price">S/ 40.00</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Impresora Térmica POS-D -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/impresora-pos.jpg" alt="Impresora Térmica POS-D PT-280">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Equipos POS</span>
-                        <h3>Impresora Térmica POS-D PT-280</h3>
-                        <p>Impresora directa de recibos térmicos ideal para sistemas de facturación y Puntos de Venta.</p>
-                        <div class="card-footer">
-                            <span class="price">Consultar</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Cable de Red -->
-                <div class="product-card">
-                    <div class="card-img">
-                        <img src="img/cable-red.jpg" alt="Cable de Red RJ45">
-                    </div>
-                    <div class="card-body">
-                        <span class="category">Conectividad</span>
-                        <h3>Cable de Red Ethernet RJ45</h3>
-                        <p>Cable de red de alta velocidad para conexiones estables a internet en PC o consolas.</p>
-                        <div class="card-footer">
-                            <span class="price">Consultar</span>
-                            <a href="#contacto" class="btn-sm">Consultar</a>
-                        </div>
-                    </div>
-                </div>
+                    <?php endwhile; ?>
+                <?php else: ?>
+                    <p style="text-align: center; color: #94a3b8; width: 100%;">No hay productos registrados en la base de datos.</p>
+                <?php endif; ?>
 
             </div>
         </div>
@@ -370,7 +318,7 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
+    <!-- JavaScript Original de tu Archivo -->
     <script>
         const modal = document.getElementById('aboutModal');
         const openBtnNav = document.getElementById('openModalNav');
